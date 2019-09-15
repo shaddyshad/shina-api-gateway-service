@@ -1,0 +1,37 @@
+{
+  "name": "shina-api-gateway-service",
+  "version": "0.0.1",
+  "author": "shadrack <shadrack@shina.co.ke>",
+  "private": true,
+  "scripts": {
+    "start": "node shina-api-gateway-service.js",
+    "debug": "node-debug shina-api-gateway-service.js --debug-brk",
+    "test": "mocha specs --reporter spec",
+    "docker": "node scripts/docker.js"
+  },
+  "engines": {
+    "node": ">=6.2.1"
+  },
+  "dependencies": {
+    "ddos": "^0.2.1",
+    "fwsp-config": "1.1.5",
+    "fwsp-logger": "0.3.4",
+    "fwsp-server-response": "2.2.6",
+    "hydra-express": "1.7.1",
+    "ioredis": "^4.14.0",
+    "moment": "^2.24.0",
+    "rate-limiter-flexible": "^1.1.1",
+    "redis-json": "^2.2.2",
+    "uuid": "^3.3.3",
+    "xstate": "^4.6.7"
+  },
+  "devDependencies": {
+    "axios": "^0.19.0",
+    "chai": "3.5.0",
+    "chai-as-promised": "^7.1.1",
+    "chai-http": "^4.3.0",
+    "eslint": "3.16.0",
+    "mocha": "3.2.0",
+    "superagent": "3.5.2"
+  }
+}

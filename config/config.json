@@ -1,0 +1,26 @@
+{
+  "environment": "development",
+  "hydra": {
+    "serviceName": "shina-api-gateway-service",
+    "serviceIP": "",
+    "servicePort": 0,
+    "serviceType": "shina-api-gateway",
+    "serviceDescription": "Acts as the main shina backend API gateway",
+    "plugins": {
+      "logger": {
+        "logRequests": true,
+        "elasticsearch": {
+          "host": "localhost",
+          "port": 9200,
+          "index": "hydra"
+        }
+      }
+    },
+    "redis": {
+      "url": "172.17.0.3",
+      "port": 6379,
+      "db": 15
+    }
+  }
+}
+ 
