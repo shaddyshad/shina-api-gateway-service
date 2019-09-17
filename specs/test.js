@@ -27,7 +27,7 @@ chai.use(chaiHttp);
 
 
 // Tests go here.
-describe("Tests search public API", function(){
+describe.skip("Tests search public API", function(){
     it("Should send a basic get request and get warehouses", function(){
         const serverUrl = 'http://192.168.1.14:36685/v1/shina-api-gateway';
         const query = {
@@ -58,7 +58,7 @@ describe("Tests search public API", function(){
  * Test bills-v1-api
  */
 
- describe("Test bills API : ", function(){
+ describe.skip("Test bills API : ", function(){
      it("Sends a request for quote and receives response", function(){
         //  Setup
          const serverUrl = "http://192.168.1.14:36685/v1/shina-api-gateway";
@@ -128,7 +128,7 @@ describe.skip("Tests middlewares: ", function(){
  * Tests the caching service
  */
 
-describe("Test the caching service", function(){
+describe.skip("Test the caching service", function(){
     it("Saves data to a key", function(){
         // Setup 
         const key = "testKey1";
@@ -141,5 +141,18 @@ describe("Test the caching service", function(){
                 expect(response).to.have.property("test", "OK");
             })
         })
+    })
+})
+
+/**
+ * Test the inbouding apis
+ */
+describe("Inbounding apis test", function(){
+    it("Creates an inbound order from a quote id", function(){
+        // setup
+        const quoteId = "5d7b66310e341567594689d0";
+        const serverUrl = "http://192.168.1.14:36685/v1/shina-api-gateway";
+
+        
     })
 })
