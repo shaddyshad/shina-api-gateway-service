@@ -3,8 +3,6 @@ const hydra = hydraExpress.getHydra();
 const express = hydraExpress.getExpress();
 const ServerResponse = require('fwsp-server-response');
 
-const SERVICE_NAME = "shina-api-gateway-service:/";
-const SHINA_BILLING = "shina-billing-service:/";
 
 let serverResponse = new ServerResponse();
 serverResponse.enableCORS(true);express.response.sendError = function(err) {
@@ -45,8 +43,6 @@ api.post('/new/inbound', (req, res) => {
     }
   });
 
-  console.log("Message ", inboundMessage);
-
   hydra.sendMessage(inboundMessage);
 
   // quote getter closure
@@ -54,8 +50,6 @@ api.post('/new/inbound', (req, res) => {
     return new Promise((resolve, reject) => {
       hydra.on('message', message => {
         const {bdy} = message;
-
-        console.log("New incoming ", message);
 
         if(bdy.error){
           reject(new Error(bdy.error));
@@ -85,6 +79,8 @@ api.post('/new/inbound', (req, res) => {
  */
 api.get('/get/:uid', (req, res) => {
   const {uid} = req.params;
+  
+
 
   if(!uid){
     res.sendError({
@@ -107,18 +103,19 @@ api.get('/get/:uid', (req, res) => {
 
   hydra.sendMessage(msg);
 
+  console.log("Sent message");
+
   // closure to listen for response
   const getOrders = function(){
     return new Promise((resolve, reject) => {
       hydra.on('message', message => {
+        console.log("Results ", message);
         const {bdy} = message;
-
         if(bdy.error){
           reject(new Error(err));
         }
-
         // 
-        resolve(bdy);
+        resolve(bdy.result);
       })
     })
   }
@@ -126,6 +123,7 @@ api.get('/get/:uid', (req, res) => {
   // handle
   getOrders()
     .then(orders => {
+      console.log("Orders ", orders);
       res.sendOk(orders);
     }).catch(err => {
       res.sendError(err);

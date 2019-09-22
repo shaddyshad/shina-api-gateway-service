@@ -14,8 +14,9 @@
   },
   "dependencies": {
     "ddos": "^0.2.1",
+    "diff": "^4.0.1",
     "fwsp-config": "1.1.5",
-    "fwsp-logger": "0.3.4",
+    "fwsp-logger": "^0.4.0",
     "fwsp-server-response": "2.2.6",
     "hydra-express": "1.7.1",
     "ioredis": "^4.14.0",

@@ -1,15 +1,8 @@
-const Redis = require('ioredis');
 const JSONCache = require('redis-json');
-
-const redisConfig = {
-    host:'172.17.0.3',
-    port: 6379,
-    db: 4
-};
+const redisClient = require('../../utils').redisClient;
 
 function ShinaCache(){
-    this.redis = new Redis(redisConfig);
-    this._cache = new JSONCache(this.redis, {prefix: 'cache'});
+    this._cache = new JSONCache(redisClient, {prefix: 'cache'});
 }
 
 /**

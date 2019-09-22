@@ -21,6 +21,7 @@ config.init('./config/config.json')
   .then(() => {
     config.version = version;
     return hydraExpress.init(config.getObject(), version, () => {
+
       hydraExpress.registerRoutes({
         '/v1/shina-api-gateway/': require('./routes/api.router')
       });
