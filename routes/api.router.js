@@ -14,6 +14,7 @@ const details = require('./details-v1-api');
 const ddos = require('../middlewares').ddos;
 const rateLimiterMiddleware = require('../middlewares').rateLimiterMiddleware;
 const orders = require('./orders-v1-api');
+const users = require('./users-v1-api');
 
 let serverResponse = new ServerResponse();
 serverResponse.enableCORS(true);express.response.sendError = function(err) {
@@ -36,6 +37,7 @@ api.use('/bills', billing);
 api.use('/search', search);
 api.use('/details', details);
 api.use('/orders', orders);
+api.use('/users', users);
 
 api.get('/', (req, res) => {
   res.sendOk({status: 'OK'});
