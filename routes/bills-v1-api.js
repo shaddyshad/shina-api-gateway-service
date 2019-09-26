@@ -10,6 +10,8 @@ const ServerResponse = require('fwsp-server-response');
 
 const SERVICE_NAME = "shina-api-gateway-service:/";
 const SHINA_BILLING = "shina-billing-service:/";
+const SHINA_USERS = "shina-users-service:/";
+const SEARCH_SERVICE = "shina-search-service:/";
 
 let serverResponse = new ServerResponse();
 serverResponse.enableCORS(true);express.response.sendError = function(err) {
@@ -28,7 +30,9 @@ let api = express.Router();
 api.post('/new', (req, res) => {
     const quoteData = req.body;
 
-    const {warehouseId, userId, type, quoteType, cycle, endDate, startDate, units} = quoteData;
+    const {warehouseId, userId, type, quoteType, cycle, endDate, startDate, units, name, phoneNumber} = quoteData;
+
+    console.log("Quote data ", quoteData);
 
 
     if(!warehouseId){
@@ -71,6 +75,19 @@ api.post('/new', (req, res) => {
         })
     }
 
+    // send use details to user service
+    hydra.sendMessage(hydra.createUMFMessage({
+        to: SHINA_USERS,
+        from: SERVICE_NAME,
+        body: {
+            type: 'update',
+            uid: userId,
+            details: {
+                name, phoneNumber
+            }
+        }
+    }));
+
     const message = hydra.createUMFMessage({
         to: SHINA_BILLING,
         from: SERVICE_NAME,
@@ -82,7 +99,9 @@ api.post('/new', (req, res) => {
             cycle,
             warehouseId,
             units,
-            userId
+            userId,
+            name,
+            phoneNumber
         }
     });
 
@@ -128,6 +147,83 @@ api.post('/new', (req, res) => {
         }
     })
 });
+
+/**
+ * Given a user choices choose an appropriate warehouse
+ */
+api.get('/get_storage', (req, res) => {
+    const {query} = req.query;
+
+    console.log("Query ", query);
+
+    // declare query
+    const FURNITURE = 'furniture';
+    const OTHER = 'others';
+    const PACKAGED = 'packaged';
+
+    // get the services required 
+    const options = query.split(',');
+    let q = {};
+
+    // figure out what service to use
+    if(options.includes(FURNITURE)){
+        // prefer a long term storage
+        q.services = ['long_term_storage', 'short_term_storage'];
+    }
+    if(options.includes(PACKAGED)){
+        q.services = ['short_term_storage'];
+    }
+    if(options.includes(OTHER)){
+        q.services = ['long_term_storage', 'short_term_storage'];
+    }
+
+    console.log("s ", q);
+
+
+
+    // send this to search service
+    hydra.sendMessage(hydra.createUMFMessage({
+        to: SEARCH_SERVICE,
+        from: SERVICE_NAME,
+        body: {
+            type: 'search',
+            query: {
+                services: [...q.services]
+            },
+            options: {
+                getServices: false
+            },
+        }
+    }));
+
+    // get the response and filter the first
+    const getQuote = function(){
+        return new Promise((resolve, reject) => {
+            hydra.on('message', message => {
+                const {bdy} = message;
+
+                if(bdy.error){
+                    reject(bdy.error);
+                }
+
+                resolve(bdy.warehouses);
+            })
+        })
+    }
+
+    getQuote()
+        .then(warehouses => {
+            const topWarehouse = warehouses.length && warehouses[0];
+
+            // get the id and send
+            const whId = topWarehouse._id;
+
+            res.sendOk(whId)
+        }).catch(err => {
+            res.sendError(err);
+        })
+});
+
 
 /**
  * Retrieve a new quote given the ID
@@ -183,7 +279,9 @@ api.get('/:id', (req, res) => {
             }
         }
     })
-})
+});
+
+
 
 
 

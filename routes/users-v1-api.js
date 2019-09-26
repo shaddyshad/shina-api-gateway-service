@@ -33,7 +33,7 @@ api.post('/sync', (req, res) => {
     // use users microservice to synchronize this data
     const msg = hydra.createUMFMessage({
         to: USERS_SERVICE_ROUTE,
-        from: THIS_SERiujyhVICE_ROUTE,
+        from: THIS_SERVICE_ROUTE,
         body: {
             type: 'sync',
             uid
@@ -51,6 +51,7 @@ api.post('/sync', (req, res) => {
 api.get('/:uid', (req, res) => {
   const {uid} = req.params;
 
+
   // create a message to users service to retrieve use details
   hydra.sendMessage(hydra.createUMFMessage({
     to: USERS_SERVICE_ROUTE,
@@ -66,6 +67,7 @@ api.get('/:uid', (req, res) => {
     return new Promise((resolve, reject) => {
       hydra.on('message', message => {
         const {bdy} = message;
+        console.log("Message ", bdy);
 
         // check for errors
         if(bdy.error){
@@ -80,7 +82,7 @@ api.get('/:uid', (req, res) => {
   // wait and send the details back
   getDetails()
     .then(userDetails => {
-      res.sendOk(details);
+      res.sendOk(userDetails);
     }).catch(err => {
       res.sendError(err);
     })
