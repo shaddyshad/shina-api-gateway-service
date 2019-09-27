@@ -1,4 +1,4 @@
-FROM node:6.3
+FROM node:8.16.1
 MAINTAINER shadrack shadrack@shina.co.ke
 EXPOSE 0
 ARG NPM_TOKEN
