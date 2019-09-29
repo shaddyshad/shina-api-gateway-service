@@ -18,7 +18,7 @@ const hydraConfig = {
   environment: "production",
   hydra: {
     serviceName: "shina-api-gateway-service",
-    serviceIP: "",
+    serviceIP: "0.0.0.0",
     servicePort: 5000,
     serviceType: "shina-api-gateway",
     serviceDescription: "Acts as the main shina backend API gateway",
@@ -48,10 +48,22 @@ config.init(hydraConfig)
     config.version = version;
     return hydraExpress.init(config.getObject(), version, () => {
 
+
       hydraExpress.registerRoutes({
         '/v1/shina-api-gateway/': require('./routes/api.router')
       });
-    });
+    }, registerMiddlewares);
   })
   .then(serviceInfo => console.log('serviceInfo', serviceInfo))
   .catch(err => console.log('err', err));
+
+
+  /**
+   * middle wares to use
+   */
+
+   function registerMiddlewares(){
+     let app = hydraExpress.getExpressApp();
+
+     app.set('port', (process.env.PORT || 5000));
+   }
