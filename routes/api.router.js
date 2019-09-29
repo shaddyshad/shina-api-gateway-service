@@ -31,6 +31,11 @@ let api = express.Router();
 api.use(ddos);
 api.use(rateLimiterMiddleware)
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "www.shina.co.ke"); // update to match the domain you will make the request from
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 // Handle the billing apis
 
