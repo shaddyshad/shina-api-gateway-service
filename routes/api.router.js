@@ -24,6 +24,7 @@ express.response.sendOk = function(result) {
   serverResponse.sendOk(this, {result});
 };
 
+
 let api = express.Router();
 
 // DDOs middlewares
@@ -41,6 +42,10 @@ api.use('/users', users);
 
 api.get('/', (req, res) => {
   res.sendOk({status: 'OK'});
+});
+
+api.get('/favicon', (req, res) => {
+  res.sendOk({status: "Favicon"});
 })
 
 module.exports = api;
