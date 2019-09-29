@@ -19,7 +19,7 @@ const hydraConfig = {
   hydra: {
     serviceName: "shina-api-gateway-service",
     serviceIP: "0.0.0.0",
-    servicePort: 5000,
+    servicePort: 0,
     serviceType: "shina-api-gateway",
     serviceDescription: "Acts as the main shina backend API gateway",
     plugins: {
@@ -65,5 +65,5 @@ config.init(hydraConfig)
    function registerMiddlewares(){
      let app = hydraExpress.getExpressApp();
 
-     app.set('port', (process.env.PORT || 5000));
+     app.set('port', (process.env.PORT ));
    }
