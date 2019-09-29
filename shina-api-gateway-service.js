@@ -14,10 +14,36 @@ hydraExpress.use(new HydraExpressLogger());
 
 let config = require('fwsp-config');
 
+const hydraConfig = {
+  environment: "production",
+  hydra: {
+    serviceName: "shina-api-gateway-service",
+    serviceIP: "",
+    servicePort: 5000,
+    serviceType: "shina-api-gateway",
+    serviceDescription: "Acts as the main shina backend API gateway",
+    plugins: {
+      logger: {
+        logRequests: true,
+        elasticsearch: {
+          host: "localhost",
+          port: 9200,
+          index: "hydra"
+        }
+      }
+    },
+    redis: {
+      url: "104.248.165.225",
+      port: 6379,
+      db: 15
+    }
+}
+}
+
 /**
 * Load configuration file and initialize hydraExpress app
 */
-config.init('./config/config.json')
+config.init(hydraConfig)
   .then(() => {
     config.version = version;
     return hydraExpress.init(config.getObject(), version, () => {
