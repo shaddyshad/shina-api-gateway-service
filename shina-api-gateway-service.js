@@ -45,7 +45,7 @@ const hydraConfig = {
 config.init(hydraConfig)
   .then(() => {
     config.version = version;
-    config.hydra.servicePort = process.env.PORT || 5000;
+    config.hydra.servicePort = process.env.PORT;
     return hydraExpress.init(config.getObject(), version, () => {
 
 
