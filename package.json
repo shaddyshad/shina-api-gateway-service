@@ -20,7 +20,7 @@
     "fwsp-server-response": "2.2.6",
     "hydra-express": "1.7.1",
     "ioredis": "^4.14.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "rate-limiter-flexible": "^1.1.1",
     "redis-json": "^2.2.2",
     "uuid": "^3.3.3",
