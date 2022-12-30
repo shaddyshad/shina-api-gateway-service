@@ -22,7 +22,7 @@
     "ioredis": "^4.14.0",
     "moment": "^2.24.0",
     "rate-limiter-flexible": "^1.1.1",
-    "redis-json": "^2.2.2",
+    "redis-json": "^6.0.3",
     "uuid": "^3.3.3",
     "xstate": "^4.6.7"
   },
